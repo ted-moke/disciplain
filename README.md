@@ -1,0 +1,1 @@
+A simple webapp for building self-discipline through goal and hour tracking
