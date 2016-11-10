@@ -1,0 +1,26 @@
+{
+  "name": "disciplain",
+  "version": "1.0.0",
+  "description": "A simple webapp for building self-discipline through goal and hour tracking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peppahjackk/disciplain.git"
+  },
+  "author": "Ted Moke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/peppahjackk/disciplain/issues"
+  },
+  "homepage": "https://github.com/peppahjackk/disciplain#readme",
+  "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "webpack": "^1.13.3"
+  }
+}
