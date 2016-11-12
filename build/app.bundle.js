@@ -46,215 +46,133 @@
 
 	'use strict';
 	
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(34);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var calculatePayment = function calculatePayment(principal, years, rate) {
-	    var monthlyRate = rate / 100 / 12;
-	    var monthlyPayment = principal * monthlyRate / (1 - Math.pow(1 / (1 + monthlyRate), years * 12));
-	    var balance = principal;
-	    var amortization = [];
-	    for (var y = 0; y < years; y++) {
-	        var interestY = 0; //Interest payment for year y
-	        var principalY = 0; //Principal payment for year y
-	        for (var m = 0; m < 12; m++) {
-	            var interestM = balance * monthlyRate; //Interest payment for month m
-	            var principalM = monthlyPayment - interestM; //Principal payment for month m
-	            interestY = interestY + interestM;
-	            principalY = principalY + principalM;
-	            balance = balance - principalM;
-	        }
-	        amortization.push({ principalY: principalY, interestY: interestY, balance: balance });
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(34);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Header = function (_React$Component) {
+	    _inherits(Header, _React$Component);
+	
+	    function Header() {
+	        _classCallCheck(this, Header);
+	
+	        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
 	    }
-	    return { monthlyPayment: monthlyPayment, amortization: amortization };
-	};
 	
-	var Header = React.createClass({
-	    displayName: 'Header',
+	    _createClass(Header, [{
+	        key: 'render',
 	
-	    render: function render() {
-	        return React.createElement(
-	            'header',
-	            null,
-	            React.createElement(
-	                'h1',
+	
+	        // ES6: Arrow function shorthand when function consists of single line return statement
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'header',
 	                null,
-	                this.props.title
-	            )
-	        );
-	    }
-	});
-	
-	var AmortizationChart = React.createClass({
-	    displayName: 'AmortizationChart',
-	
-	    render: function render() {
-	        var items = this.props.data.map(function (year, index) {
-	            return React.createElement(
-	                'tr',
-	                { key: index },
-	                React.createElement(
-	                    'td',
+	                _react2.default.createElement(
+	                    'h1',
 	                    null,
-	                    index + 1
-	                ),
-	                React.createElement(
-	                    'td',
-	                    { className: 'currency principal' },
-	                    Math.round(year.principalY).toLocaleString()
-	                ),
-	                React.createElement(
-	                    'td',
-	                    { className: 'stretch' },
-	                    React.createElement(
-	                        'div',
-	                        { className: 'flex' },
-	                        React.createElement('div', { className: 'bar principal', style: { flex: year.principalY, WebkitFlex: year.principalY } }),
-	                        React.createElement('div', { className: 'bar interest', style: { flex: year.interestY, WebkitFlex: year.interestY } })
-	                    )
-	                ),
-	                React.createElement(
-	                    'td',
-	                    { className: 'currency interest' },
-	                    Math.round(year.interestY).toLocaleString()
-	                ),
-	                React.createElement(
-	                    'td',
-	                    { className: 'currency' },
-	                    Math.round(year.balance).toLocaleString()
+	                    this.props.title
 	                )
 	            );
-	        });
-	        return React.createElement(
-	            'table',
-	            null,
-	            React.createElement(
-	                'thead',
-	                null,
-	                React.createElement(
-	                    'tr',
-	                    null,
-	                    React.createElement(
-	                        'th',
+	        }
+	    }]);
+	
+	    return Header;
+	}(_react2.default.Component);
+	
+	;
+	
+	var HourTracker = function (_React$Component2) {
+	    _inherits(HourTracker, _React$Component2);
+	
+	    function HourTracker(props) {
+	        _classCallCheck(this, HourTracker);
+	
+	        var _this2 = _possibleConstructorReturn(this, (HourTracker.__proto__ || Object.getPrototypeOf(HourTracker)).call(this, props));
+	
+	        _this2.state = { totalHours: 0 };
+	        return _this2;
+	    }
+	
+	    _createClass(HourTracker, [{
+	        key: 'addHour',
+	        value: function addHour() {
+	            this.setState(function (prevState) {
+	                return { totalHours: prevState.totalHours + 1 };
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            // ES6: Object destructuring syntax
+	            // let {monthlyPayment, amortization} = calculatePayment(this.state.principal, this.state.years, this.state.rate);
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'content' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'form' },
+	                    _react2.default.createElement(
+	                        'div',
 	                        null,
-	                        'Year'
-	                    ),
-	                    React.createElement(
-	                        'th',
-	                        { className: 'principal' },
-	                        'Principal'
-	                    ),
-	                    React.createElement('th', { className: 'stretch' }),
-	                    React.createElement(
-	                        'th',
-	                        { className: 'interest' },
-	                        'Interest'
-	                    ),
-	                    React.createElement(
-	                        'th',
-	                        null,
-	                        'Balance'
+	                        _react2.default.createElement(
+	                            'p',
+	                            null,
+	                            this.state.totalHours
+	                        ),
+	                        _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' })
 	                    )
 	                )
-	            ),
-	            React.createElement(
-	                'tbody',
-	                null,
-	                items
-	            )
-	        );
+	            );
+	        }
+	    }]);
+	
+	    return HourTracker;
+	}(_react2.default.Component);
+	
+	;
+	
+	var App = function (_React$Component3) {
+	    _inherits(App, _React$Component3);
+	
+	    function App() {
+	        _classCallCheck(this, App);
+	
+	        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 	    }
-	});
 	
-	var MortgageCalculator = React.createClass({
-	    displayName: 'MortgageCalculator',
-	
-	    getInitialState: function getInitialState() {
-	        return {
-	            principal: this.props.principal,
-	            years: this.props.years,
-	            rate: this.props.rate
-	        };
-	    },
-	    principalChange: function principalChange(event) {
-	        this.setState({ principal: event.target.value });
-	    },
-	    yearsChange: function yearsChange(event) {
-	        this.setState({ years: event.target.value });
-	    },
-	    rateChange: function rateChange(event) {
-	        this.setState({ rate: event.target.value });
-	    },
-	    render: function render() {
-	        var payment = calculatePayment(this.state.principal, this.state.years, this.state.rate);
-	        var monthlyPayment = payment.monthlyPayment;
-	        var amortization = payment.amortization;
-	        return React.createElement(
-	            'div',
-	            { className: 'content' },
-	            React.createElement(
+	    _createClass(App, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
 	                'div',
-	                { className: 'form' },
-	                React.createElement(
-	                    'div',
-	                    null,
-	                    React.createElement(
-	                        'label',
-	                        null,
-	                        'Principal:'
-	                    ),
-	                    React.createElement('input', { type: 'text', value: this.state.principal, onChange: this.principalChange })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    null,
-	                    React.createElement(
-	                        'label',
-	                        null,
-	                        'Years:'
-	                    ),
-	                    React.createElement('input', { type: 'text', value: this.state.years, onChange: this.yearsChange })
-	                ),
-	                React.createElement(
-	                    'div',
-	                    null,
-	                    React.createElement(
-	                        'label',
-	                        { htmlFor: 'rate' },
-	                        'Rate:'
-	                    ),
-	                    React.createElement('input', { type: 'text', value: this.state.rate, onChange: this.rateChange })
-	                )
-	            ),
-	            React.createElement(
-	                'h2',
 	                null,
-	                'Monthly Payment: ',
-	                React.createElement(
-	                    'span',
-	                    { className: 'currency' },
-	                    Number(monthlyPayment.toFixed(2)).toLocaleString()
-	                )
-	            ),
-	            React.createElement(AmortizationChart, { data: amortization })
-	        );
-	    }
-	});
+	                _react2.default.createElement(Header, { title: 'Disciplain' }),
+	                _react2.default.createElement(HourTracker, null)
+	            );
+	        }
+	    }]);
 	
-	var App = React.createClass({
-	    displayName: 'App',
+	    return App;
+	}(_react2.default.Component);
 	
-	    render: function render() {
-	        return React.createElement(
-	            'div',
-	            null,
-	            React.createElement(Header, { title: 'React Mortgage Calculator' }),
-	            React.createElement(MortgageCalculator, { principal: '200000', years: '30', rate: '5' })
-	        );
-	    }
-	});
+	;
 	
-	ReactDOM.render(React.createElement(App, null), document.getElementById("app"));
+	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("app"));
 
 /***/ },
 /* 1 */
