@@ -85,8 +85,11 @@
 	                _react2.default.createElement(
 	                    'h1',
 	                    null,
-	                    this.props.title
-	                )
+	                    ' ',
+	                    this.props.title,
+	                    ' '
+	                ),
+	                ' '
 	            );
 	        }
 	    }]);
@@ -104,7 +107,7 @@
 	
 	        var _this2 = _possibleConstructorReturn(this, (HourTracker.__proto__ || Object.getPrototypeOf(HourTracker)).call(this, props));
 	
-	        _this2.state = { totalHours: 0 };
+	        _this2.state = { totalHours: 0, totalMins: 0 };
 	        return _this2;
 	    }
 	
@@ -116,26 +119,46 @@
 	            });
 	        }
 	    }, {
+	        key: 'addMins',
+	        value: function addMins() {
+	
+	            this.setState(function (prevState) {
+	                if (prevState.totalMins >= 40) {
+	                    return {
+	                        totalMins: 0,
+	                        totalHours: prevState.totalHours + 1
+	                    };
+	                } else {
+	                    return { totalMins: prevState.totalMins + 20 };
+	                }
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            // ES6: Object destructuring syntax
 	            // let {monthlyPayment, amortization} = calculatePayment(this.state.principal, this.state.years, this.state.rate);
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'content' },
+	                { className: 'overview' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'form' },
+	                    { className: 'view' },
 	                    _react2.default.createElement(
-	                        'div',
+	                        'p',
 	                        null,
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            this.state.totalHours
-	                        ),
-	                        _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' })
+	                        ' ',
+	                        this.state.totalHours,
+	                        '  hours ',
+	                        this.state.totalMins,
+	                        '  minutes'
 	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'control' },
+	                    _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' }),
+	                    _react2.default.createElement('input', { type: 'button', onClick: this.addMins.bind(this), value: 'Add 20 Minutes' })
 	                )
 	            );
 	        }
