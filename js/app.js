@@ -56,13 +56,20 @@ class HourTracker extends React.Component{
         // let {monthlyPayment, amortization} = calculatePayment(this.state.principal, this.state.years, this.state.rate);
         return (
             <div className="overview">
-                <div className="view">
-                    <p> {this.state.totalHours}  hours {this.state.totalMins}  minutes local {this.state.localS} </p>
+                <div className="weekTotals">
+                    <p className="totalTime"> This week: <strong>{this.state.totalHours}  hours {this.state.totalMins}  minutes</strong><br/> Notes:</p>
                 </div>
-                <div className="control"><input type="button" onClick={this.addHour.bind(this)} value="Add Hour" />
+                <form role="form" id="sessionForm">
+                  <h3>Create a new session</h3>
+                  <div className="row">
+                    <input type="button" onClick={this.addHour.bind(this)} value="Add Hour" />
                     <input type="button" onClick={this.addMins.bind(this)} value="Add 20 Minutes" />
-                    <input type="button" onClick={this.clearStorage.bind(this)} value="Clear storage" />
-                </div>
+                  </div>
+                  <textarea id="note" rows="4" placeholder="Session Notes" />
+                  <input type="button" value="Submit session" />
+                </form>
+                  
+                <input type="button" onClick={this.clearStorage.bind(this)} value="Clear storage" />
             </div>
         );
     }

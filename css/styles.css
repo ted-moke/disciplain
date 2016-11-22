@@ -1,28 +1,73 @@
-body {
-    font-family: 'Roboto', 'Sans Serif';
-    font-size: 16px;
-    padding: 0;
-    margin: 0;
-    height: 100vh;
-    }
+* {
+  color: #333;
+}
 
-.overview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    align-self:center;
+body {
+  font-family: 'Roboto', 'Sans Serif';
+  font-size: 16px;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  color: #333;
+  margin: .5em;
+  font-family: 'Roboto', 'Sans Serif'
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 .5em .5em .5em;
+  margin: .5em;
+  border: 1px solid #333;
+  border-radius: 3px;
+}
+
+textarea {
+  width: 90%;
+  margin: .5em;
+}
+
+button {
+  margin: .5em;
 }
 
 header {
-    background-color: #03A9F4;
-    padding: 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background-color: #03A9F4;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-header > h1 {
-    font-weight: 300;
-    font-size: 24px;
-    margin: 0;
-    color: #FFFFFF;
+header> h1 {
+  font-weight: 300;
+  font-size: 24px;
+  margin: 0;
+  color: #FFFFFF;
+}
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.weekTotals {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: .5em;
+}
+
+.totalTime {
+  margin: 1em;
 }

@@ -155,26 +155,41 @@
 	                { className: 'overview' },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'view' },
+	                    { className: 'weekTotals' },
 	                    _react2.default.createElement(
 	                        'p',
-	                        null,
-	                        ' ',
-	                        this.state.totalHours,
-	                        '  hours ',
-	                        this.state.totalMins,
-	                        '  minutes local ',
-	                        this.state.localS,
-	                        ' '
+	                        { className: 'totalTime' },
+	                        ' This week: ',
+	                        _react2.default.createElement(
+	                            'strong',
+	                            null,
+	                            this.state.totalHours,
+	                            '  hours ',
+	                            this.state.totalMins,
+	                            '  minutes'
+	                        ),
+	                        _react2.default.createElement('br', null),
+	                        ' Notes:'
 	                    )
 	                ),
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'control' },
-	                    _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' }),
-	                    _react2.default.createElement('input', { type: 'button', onClick: this.addMins.bind(this), value: 'Add 20 Minutes' }),
-	                    _react2.default.createElement('input', { type: 'button', onClick: this.clearStorage.bind(this), value: 'Clear storage' })
-	                )
+	                    'form',
+	                    { role: 'form', id: 'sessionForm' },
+	                    _react2.default.createElement(
+	                        'h3',
+	                        null,
+	                        'Create a new session'
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
+	                        _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' }),
+	                        _react2.default.createElement('input', { type: 'button', onClick: this.addMins.bind(this), value: 'Add 20 Minutes' })
+	                    ),
+	                    _react2.default.createElement('textarea', { id: 'note', rows: '4', placeholder: 'Session Notes' }),
+	                    _react2.default.createElement('input', { type: 'button', value: 'Submit session' })
+	                ),
+	                _react2.default.createElement('input', { type: 'button', onClick: this.clearStorage.bind(this), value: 'Clear storage' })
 	            );
 	        }
 	    }]);
