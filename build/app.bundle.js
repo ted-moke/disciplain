@@ -65,162 +65,178 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var Header = function (_React$Component) {
-	    _inherits(Header, _React$Component);
+	  _inherits(Header, _React$Component);
 	
-	    function Header() {
-	        _classCallCheck(this, Header);
+	  function Header() {
+	    _classCallCheck(this, Header);
 	
-	        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
+	  }
+	
+	  _createClass(Header, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'header',
+	        null,
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          ' ',
+	          this.props.title,
+	          ' '
+	        ),
+	        ' '
+	      );
 	    }
+	  }]);
 	
-	    _createClass(Header, [{
-	        key: 'render',
-	
-	
-	        // ES6: Arrow function shorthand when function consists of single line return statement
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'header',
-	                null,
-	                _react2.default.createElement(
-	                    'h1',
-	                    null,
-	                    ' ',
-	                    this.props.title,
-	                    ' '
-	                ),
-	                ' '
-	            );
-	        }
-	    }]);
-	
-	    return Header;
+	  return Header;
 	}(_react2.default.Component);
 	
 	;
 	
 	var HourTracker = function (_React$Component2) {
-	    _inherits(HourTracker, _React$Component2);
+	  _inherits(HourTracker, _React$Component2);
 	
-	    function HourTracker(props) {
-	        _classCallCheck(this, HourTracker);
+	  function HourTracker(props) {
+	    _classCallCheck(this, HourTracker);
 	
-	        var _this2 = _possibleConstructorReturn(this, (HourTracker.__proto__ || Object.getPrototypeOf(HourTracker)).call(this, props));
+	    var _this2 = _possibleConstructorReturn(this, (HourTracker.__proto__ || Object.getPrototypeOf(HourTracker)).call(this, props));
 	
-	        _this2.state = { totalHours: JSON.parse(localStorage.getItem('hrs') || '0'), totalMins: JSON.parse(localStorage.getItem('mins') || '0') };
-	        return _this2;
+	    _this2.state = { totalHours: JSON.parse(localStorage.getItem('hrs') || '0'), totalMins: JSON.parse(localStorage.getItem('mins') || '0'), tempHours: 0, tempMins: 0 };
+	    return _this2;
+	  }
+	
+	  _createClass(HourTracker, [{
+	    key: 'addHour',
+	    value: function addHour() {
+	      this.setState(function (prevState) {
+	        return { tempHours: prevState.tempHours + 1 };
+	      });
 	    }
-	
-	    _createClass(HourTracker, [{
-	        key: 'addHour',
-	        value: function addHour() {
-	            this.setState(function (prevState) {
-	                return { totalHours: prevState.totalHours + 1 };
-	            });
-	
-	            localStorage.setItem('hrs', JSON.stringify(this.state.totalHours + 1));
+	  }, {
+	    key: 'addMins',
+	    value: function addMins() {
+	      this.setState(function (prevState) {
+	        if (prevState.tempMins >= 40) {
+	          return {
+	            tempMins: 0,
+	            tempHours: prevState.tempHours + 1
+	          };
+	        } else {
+	          return { tempMins: prevState.tempMins + 20 };
 	        }
-	    }, {
-	        key: 'addMins',
-	        value: function addMins() {
-	            var _this3 = this;
+	      });
+	    }
+	  }, {
+	    key: 'submitSession',
+	    value: function submitSession() {
+	      var _this3 = this;
 	
-	            this.setState(function (prevState) {
-	                if (prevState.totalMins >= 40) {
-	                    localStorage.setItem('hrs', JSON.stringify(_this3.state.totalHours + 1)), localStorage.setItem('mins', JSON.stringify(0));
-	                    return {
-	                        totalMins: 0,
-	                        totalHours: prevState.totalHours + 1
-	                    };
-	                } else {
-	                    localStorage.setItem('mins', JSON.stringify(_this3.state.totalMins + 20));
-	                    return { totalMins: prevState.totalMins + 20 };
-	                }
-	            });
+	      this.setState(function (prevState) {
+	        if (prevState.totalMins + _this3.state.tempMins > 40) {
+	          localStorage.setItem('mins', JSON.stringify(prevState.totalMins + _this3.state.tempMins - 60));
+	          localStorage.setItem('hrs', JSON.stringify(prevState.totalHrs + _this3.state.tempMins + 1));
+	          return { totalHours: prevState.totalHours + _this3.state.tempHours + 1, totalMins: prevState.totalMins + _this3.state.tempMins - 60, tempHours: 0, tempMins: 0 };
+	        } else {
+	          localStorage.setItem('hrs', JSON.stringify(prevState.totalHours + _this3.state.tempHours));
+	          localStorage.setItem('mins', JSON.stringify(prevState.totalMins + _this3.state.tempMins));
+	          return { totalHours: prevState.totalHours + _this3.state.tempHours, totalMins: prevState.totalMins + _this3.state.tempMins, tempHours: 0, tempMins: 0 };
 	        }
-	    }, {
-	        key: 'clearStorage',
-	        value: function clearStorage() {
-	            localStorage.setItem('hrs', JSON.stringify(0)), localStorage.setItem('mins', JSON.stringify(0)), this.setState(function (prevState) {
-	                return { totalHours: 0, totalMins: 0 };
-	            });
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            // ES6: Object destructuring syntax
-	            // let {monthlyPayment, amortization} = calculatePayment(this.state.principal, this.state.years, this.state.rate);
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'overview' },
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'weekTotals' },
-	                    _react2.default.createElement(
-	                        'p',
-	                        { className: 'totalTime' },
-	                        ' This week: ',
-	                        _react2.default.createElement(
-	                            'strong',
-	                            null,
-	                            this.state.totalHours,
-	                            '  hours ',
-	                            this.state.totalMins,
-	                            '  minutes'
-	                        ),
-	                        _react2.default.createElement('br', null),
-	                        ' Notes:'
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    'form',
-	                    { role: 'form', id: 'sessionForm' },
-	                    _react2.default.createElement(
-	                        'h3',
-	                        null,
-	                        'Create a new session'
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'row' },
-	                        _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' }),
-	                        _react2.default.createElement('input', { type: 'button', onClick: this.addMins.bind(this), value: 'Add 20 Minutes' })
-	                    ),
-	                    _react2.default.createElement('textarea', { id: 'note', rows: '4', placeholder: 'Session Notes' }),
-	                    _react2.default.createElement('input', { type: 'button', value: 'Submit session' })
-	                ),
-	                _react2.default.createElement('input', { type: 'button', onClick: this.clearStorage.bind(this), value: 'Clear storage' })
-	            );
-	        }
-	    }]);
+	      });
+	    }
+	  }, {
+	    key: 'clearStorage',
+	    value: function clearStorage() {
+	      localStorage.setItem('hrs', JSON.stringify(0)), localStorage.setItem('mins', JSON.stringify(0)), this.setState(function (prevState) {
+	        return { totalHours: 0, totalMins: 0 };
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
 	
-	    return HourTracker;
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'overview' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'weekTotals' },
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'totalTime' },
+	            ' This week: ',
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              this.state.totalHours,
+	              '  hours ',
+	              this.state.totalMins,
+	              '  minutes'
+	            ),
+	            _react2.default.createElement('br', null),
+	            ' Notes:'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { role: 'form', id: 'sessionForm' },
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            'Create a new session'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            ' ',
+	            this.state.tempHours,
+	            ' hours ',
+	            this.state.tempMins,
+	            ' minutes '
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'row' },
+	            _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' }),
+	            _react2.default.createElement('input', { type: 'button', onClick: this.addMins.bind(this), value: 'Add 20 Minutes' })
+	          ),
+	          _react2.default.createElement('textarea', { id: 'note', rows: '4', placeholder: 'Session Notes' }),
+	          _react2.default.createElement('input', { type: 'button', onClick: this.submitSession.bind(this), value: 'Submit session' })
+	        ),
+	        _react2.default.createElement('input', { type: 'button', onClick: this.clearStorage.bind(this), value: 'Clear storage' })
+	      );
+	    }
+	  }]);
+	
+	  return HourTracker;
 	}(_react2.default.Component);
 	
 	;
 	
 	var App = function (_React$Component3) {
-	    _inherits(App, _React$Component3);
+	  _inherits(App, _React$Component3);
 	
-	    function App() {
-	        _classCallCheck(this, App);
+	  function App() {
+	    _classCallCheck(this, App);
 	
-	        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	  }
+	
+	  _createClass(App, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(Header, { title: 'Disciplain' }),
+	        _react2.default.createElement(HourTracker, null)
+	      );
 	    }
+	  }]);
 	
-	    _createClass(App, [{
-	        key: 'render',
-	        value: function render() {
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(Header, { title: 'Disciplain' }),
-	                _react2.default.createElement(HourTracker, null)
-	            );
-	        }
-	    }]);
-	
-	    return App;
+	  return App;
 	}(_react2.default.Component);
 	
 	;
