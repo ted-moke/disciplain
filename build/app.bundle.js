@@ -104,7 +104,7 @@
 	
 	    var _this2 = _possibleConstructorReturn(this, (HourTracker.__proto__ || Object.getPrototypeOf(HourTracker)).call(this, props));
 	
-	    _this2.state = { totalHours: JSON.parse(localStorage.getItem('hrs') || '0'), totalMins: JSON.parse(localStorage.getItem('mins') || '0'), tempHours: 0, tempMins: 0 };
+	    _this2.state = { totalHours: 0, totalMins: 0, tempHours: 0, tempMins: 0, notes: '', tempNote: '' }; //totalHours: (JSON.parse(localStorage.getItem('hrs') || '0')), totalMins: (JSON.parse(localStorage.getItem('mins') || '0')), notes: (JSON.parse(localStorage.getItem('notes') || 'blank')), tempHours: 0, tempMins: 0 }
 	    return _this2;
 	  }
 	
@@ -131,20 +131,27 @@
 	    }
 	  }, {
 	    key: 'submitSession',
-	    value: function submitSession() {
+	    value: function submitSession(e) {
 	      var _this3 = this;
+	
+	      e.preventDefault();
 	
 	      this.setState(function (prevState) {
 	        if (prevState.totalMins + _this3.state.tempMins > 40) {
 	          localStorage.setItem('mins', JSON.stringify(prevState.totalMins + _this3.state.tempMins - 60));
 	          localStorage.setItem('hrs', JSON.stringify(prevState.totalHrs + _this3.state.tempMins + 1));
-	          return { totalHours: prevState.totalHours + _this3.state.tempHours + 1, totalMins: prevState.totalMins + _this3.state.tempMins - 60, tempHours: 0, tempMins: 0 };
+	          return { totalHours: prevState.totalHours + _this3.state.tempHours + 1, totalMins: prevState.totalMins + _this3.state.tempMins - 60, tempHours: 0, tempMins: 0, notes: prevState.notes + _this3.state.tempNote, tempNote: '' };
 	        } else {
 	          localStorage.setItem('hrs', JSON.stringify(prevState.totalHours + _this3.state.tempHours));
 	          localStorage.setItem('mins', JSON.stringify(prevState.totalMins + _this3.state.tempMins));
-	          return { totalHours: prevState.totalHours + _this3.state.tempHours, totalMins: prevState.totalMins + _this3.state.tempMins, tempHours: 0, tempMins: 0 };
+	          return { totalHours: prevState.totalHours + _this3.state.tempHours, totalMins: prevState.totalMins + _this3.state.tempMins, tempHours: 0, tempMins: 0, notes: prevState.notes + _this3.state.tempNote, tempNote: '' };
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      this.setState({ tempNote: e.target.value });
 	    }
 	  }, {
 	    key: 'clearStorage',
@@ -176,12 +183,14 @@
 	              '  minutes'
 	            ),
 	            _react2.default.createElement('br', null),
-	            ' Notes:'
+	            ' Notes: ',
+	            this.state.notes,
+	            ' '
 	          )
 	        ),
 	        _react2.default.createElement(
 	          'form',
-	          { role: 'form', id: 'sessionForm' },
+	          { role: 'form', id: 'sessionForm', onSubmit: this.submitSession.bind(this) },
 	          _react2.default.createElement(
 	            'h3',
 	            null,
@@ -202,8 +211,8 @@
 	            _react2.default.createElement('input', { type: 'button', onClick: this.addHour.bind(this), value: 'Add Hour' }),
 	            _react2.default.createElement('input', { type: 'button', onClick: this.addMins.bind(this), value: 'Add 20 Minutes' })
 	          ),
-	          _react2.default.createElement('textarea', { id: 'note', rows: '4', placeholder: 'Session Notes' }),
-	          _react2.default.createElement('input', { type: 'button', onClick: this.submitSession.bind(this), value: 'Submit session' })
+	          _react2.default.createElement('textarea', { ref: 'notes', id: 'notes', rows: '4', placeholder: 'Session Notes', onChange: this.handleChange.bind(this), value: this.state.tempNote }),
+	          _react2.default.createElement('input', { type: 'submit', value: 'Submit session' })
 	        ),
 	        _react2.default.createElement('input', { type: 'button', onClick: this.clearStorage.bind(this), value: 'Clear storage' })
 	      );
@@ -3401,30 +3410,38 @@
 	// Set.prototype.keys
 	Set.prototype != null && typeof Set.prototype.keys === 'function' && isNative(Set.prototype.keys);
 	
+	var setItem;
+	var getItem;
+	var removeItem;
+	var getItemIDs;
+	var addRoot;
+	var removeRoot;
+	var getRootIDs;
+	
 	if (canUseCollections) {
 	  var itemMap = new Map();
 	  var rootIDSet = new Set();
 	
-	  var setItem = function setItem(id, item) {
+	  setItem = function setItem(id, item) {
 	    itemMap.set(id, item);
 	  };
-	  var getItem = function getItem(id) {
+	  getItem = function getItem(id) {
 	    return itemMap.get(id);
 	  };
-	  var removeItem = function removeItem(id) {
+	  removeItem = function removeItem(id) {
 	    itemMap['delete'](id);
 	  };
-	  var getItemIDs = function getItemIDs() {
+	  getItemIDs = function getItemIDs() {
 	    return Array.from(itemMap.keys());
 	  };
 	
-	  var addRoot = function addRoot(id) {
+	  addRoot = function addRoot(id) {
 	    rootIDSet.add(id);
 	  };
-	  var removeRoot = function removeRoot(id) {
+	  removeRoot = function removeRoot(id) {
 	    rootIDSet['delete'](id);
 	  };
-	  var getRootIDs = function getRootIDs() {
+	  getRootIDs = function getRootIDs() {
 	    return Array.from(rootIDSet.keys());
 	  };
 	} else {
@@ -3440,31 +3457,31 @@
 	    return parseInt(key.substr(1), 10);
 	  };
 	
-	  var setItem = function setItem(id, item) {
+	  setItem = function setItem(id, item) {
 	    var key = getKeyFromID(id);
 	    itemByKey[key] = item;
 	  };
-	  var getItem = function getItem(id) {
+	  getItem = function getItem(id) {
 	    var key = getKeyFromID(id);
 	    return itemByKey[key];
 	  };
-	  var removeItem = function removeItem(id) {
+	  removeItem = function removeItem(id) {
 	    var key = getKeyFromID(id);
 	    delete itemByKey[key];
 	  };
-	  var getItemIDs = function getItemIDs() {
+	  getItemIDs = function getItemIDs() {
 	    return Object.keys(itemByKey).map(getIDFromKey);
 	  };
 	
-	  var addRoot = function addRoot(id) {
+	  addRoot = function addRoot(id) {
 	    var key = getKeyFromID(id);
 	    rootByKey[key] = true;
 	  };
-	  var removeRoot = function removeRoot(id) {
+	  removeRoot = function removeRoot(id) {
 	    var key = getKeyFromID(id);
 	    delete rootByKey[key];
 	  };
-	  var getRootIDs = function getRootIDs() {
+	  getRootIDs = function getRootIDs() {
 	    return Object.keys(rootByKey).map(getIDFromKey);
 	  };
 	}
@@ -4248,7 +4265,7 @@
 	
 	'use strict';
 	
-	module.exports = '15.4.0';
+	module.exports = '15.4.1';
 
 /***/ },
 /* 31 */
@@ -5656,6 +5673,28 @@
 	  return '.' + inst._rootNodeID;
 	};
 	
+	function isInteractive(tag) {
+	  return tag === 'button' || tag === 'input' || tag === 'select' || tag === 'textarea';
+	}
+	
+	function shouldPreventMouseEvent(name, type, props) {
+	  switch (name) {
+	    case 'onClick':
+	    case 'onClickCapture':
+	    case 'onDoubleClick':
+	    case 'onDoubleClickCapture':
+	    case 'onMouseDown':
+	    case 'onMouseDownCapture':
+	    case 'onMouseMove':
+	    case 'onMouseMoveCapture':
+	    case 'onMouseUp':
+	    case 'onMouseUpCapture':
+	      return !!(props.disabled && isInteractive(type));
+	    default:
+	      return false;
+	  }
+	}
+	
 	/**
 	 * This is a unified interface for event plugins to be installed and configured.
 	 *
@@ -5724,7 +5763,12 @@
 	   * @return {?function} The stored callback.
 	   */
 	  getListener: function getListener(inst, registrationName) {
+	    // TODO: shouldPreventMouseEvent is DOM-specific and definitely should not
+	    // live here; needs to be moved to a better place soon
 	    var bankForRegistrationName = listenerBank[registrationName];
+	    if (shouldPreventMouseEvent(registrationName, inst._currentElement.type, inst._currentElement.props)) {
+	      return null;
+	    }
 	    var key = getDictionaryKey(inst);
 	    return bankForRegistrationName && bankForRegistrationName[key];
 	  },
@@ -19841,18 +19885,6 @@
 	  return tag === 'button' || tag === 'input' || tag === 'select' || tag === 'textarea';
 	}
 	
-	function shouldPreventMouseEvent(inst) {
-	  if (inst) {
-	    var disabled = inst._currentElement && inst._currentElement.props.disabled;
-	
-	    if (disabled) {
-	      return isInteractive(inst._tag);
-	    }
-	  }
-	
-	  return false;
-	}
-	
 	var SimpleEventPlugin = {
 	
 	  eventTypes: eventTypes,
@@ -19923,10 +19955,7 @@
 	      case 'topMouseDown':
 	      case 'topMouseMove':
 	      case 'topMouseUp':
-	        // Disabled elements should not respond to mouse events
-	        if (shouldPreventMouseEvent(targetInst)) {
-	          return null;
-	        }
+	      // TODO: Disabled elements should not respond to mouse events
 	      /* falls through */
 	      case 'topMouseOut':
 	      case 'topMouseOver':
@@ -21288,7 +21317,7 @@
 	
 	'use strict';
 	
-	module.exports = '15.4.0';
+	module.exports = '15.4.1';
 
 /***/ },
 /* 172 */
